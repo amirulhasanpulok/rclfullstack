@@ -45,14 +45,32 @@ cd apps/shop && npm run dev
 
 ## 📚 Documentation
 
+### Project Overview
 | Document | Description |
 |----------|-------------|
-| [PHASE_1_SETUP.md](PHASE_1_SETUP.md) | Foundation & Infrastructure |
+| [EXECUTIVE_SUMMARY.md](EXECUTIVE_SUMMARY.md) | **START HERE** - Project overview, statistics, and completion status |
+| [QUICK_START.md](QUICK_START.md) | Fast setup guide for developers |
+
+### Technical Implementation
+| Document | Description |
+|----------|-------------|
+| [PHASE_1_SETUP.md](PHASE_1_SETUP.md) | Foundation & Monorepo Infrastructure |
 | [PHASE_2_SETUP.md](PHASE_2_SETUP.md) | Backend API Architecture (1000+ lines) |
 | [PHASE_3_SETUP.md](PHASE_3_SETUP.md) | Frontend Implementation (1500+ lines) |
 | [PHASES_4-7_COMPLETE_GUIDE.md](PHASES_4-7_COMPLETE_GUIDE.md) | Testing, Migration & Deployment (850+ lines) |
-| [MIGRATION_ROADMAP.md](MIGRATION_ROADMAP.md) | Complete Strategy (850+ lines) |
-| [PROJECT_COMPLETE.txt](PROJECT_COMPLETE.txt) | Final Status Report |
+
+### Team Resources
+| Document | Description |
+|----------|-------------|
+| [TEAM_HANDOFF.md](TEAM_HANDOFF.md) | Deployment checklist, team roles, and responsibilities |
+| [GITHUB_COLLABORATION.md](GITHUB_COLLABORATION.md) | Git workflow, branching strategy, and collaboration guidelines |
+
+### Reference
+| Document | Description |
+|----------|-------------|
+| [MIGRATION_ROADMAP.md](MIGRATION_ROADMAP.md) | Original modernization strategy (850+ lines) |
+| [PROJECT_COMPLETE.txt](PROJECT_COMPLETE.txt) | Final project status report |
+| [COMPLETION_SUMMARY.md](COMPLETION_SUMMARY.md) | Phase-by-phase completion tracking |
 
 ## 🏗️ Architecture
 
