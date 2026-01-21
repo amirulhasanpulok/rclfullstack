@@ -1,0 +1,121 @@
+name: Vue Frontend Tests
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'apps/admin/**'
+      - 'apps/shop/**'
+      - '.github/workflows/frontend-tests.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'apps/admin/**'
+      - 'apps/shop/**'
+
+jobs:
+  test-admin:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'apps/admin/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ./apps/admin
+        run: npm ci
+
+      - name: Run type checking
+        working-directory: ./apps/admin
+        run: npm run type-check
+
+      - name: Run linter
+        working-directory: ./apps/admin
+        run: npm run lint
+
+      - name: Run tests
+        working-directory: ./apps/admin
+        run: npm run test -- --run
+
+      - name: Generate coverage report
+        working-directory: ./apps/admin
+        run: npm run coverage -- --run
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./apps/admin/coverage/coverage-final.json
+          flags: admin-frontend
+
+  test-shop:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'apps/shop/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ./apps/shop
+        run: npm ci
+
+      - name: Run type checking
+        working-directory: ./apps/shop
+        run: npm run type-check
+
+      - name: Run linter
+        working-directory: ./apps/shop
+        run: npm run lint
+
+      - name: Run tests
+        working-directory: ./apps/shop
+        run: npm run test -- --run
+
+      - name: Generate coverage report
+        working-directory: ./apps/shop
+        run: npm run coverage -- --run
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./apps/shop/coverage/coverage-final.json
+          flags: shop-frontend
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [test-admin, test-shop]
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Admin dependencies
+        working-directory: ./apps/admin
+        run: npm ci
+
+      - name: Build Admin
+        working-directory: ./apps/admin
+        run: npm run build
+
+      - name: Install Shop dependencies
+        working-directory: ./apps/shop
+        run: npm ci
+
+      - name: Build Shop
+        working-directory: ./apps/shop
+        run: npm run build

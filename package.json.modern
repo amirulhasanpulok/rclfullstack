@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "name": "nicolatetcholdiwsconsole-modern",
+  "version": "1.0.0",
+  "description": "Modern e-commerce platform - Monorepo",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "preview": "pnpm -r preview",
+    "test": "pnpm -r test",
+    "test:coverage": "pnpm -r test:coverage",
+    "lint": "pnpm -r lint",
+    "format": "pnpm -r format",
+    "type-check": "pnpm -r type-check",
+    "db:migrate": "cd apps/api && php artisan migrate",
+    "db:migrate:fresh": "cd apps/api && php artisan migrate:fresh",
+    "db:seed": "cd apps/api && php artisan db:seed",
+    "db:fresh": "cd apps/api && php artisan migrate:fresh --seed",
+    "setup": "pnpm install && docker-compose up -d && pnpm db:fresh"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.0",
+    "prettier": "^3.1.0"
+  }
+}

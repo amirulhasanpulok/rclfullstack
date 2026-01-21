@@ -1,0 +1,97 @@
+name: Laravel API Tests
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'apps/api/**'
+      - '.github/workflows/api-tests.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'apps/api/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing
+          MYSQL_ROOT_PASSWORD: root
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mysql, redis, mbstring, curl, json
+          tools: composer
+
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.composer/cache/files
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install dependencies
+        working-directory: ./apps/api
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Create .env file
+        working-directory: ./apps/api
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Update database config for testing
+        working-directory: ./apps/api
+        run: |
+          sed -i 's/DB_CONNECTION=mysql/DB_CONNECTION=mysql/' .env
+          sed -i 's/DB_HOST=127.0.0.1/DB_HOST=127.0.0.1/' .env
+          sed -i 's/DB_PORT=3306/DB_PORT=3306/' .env
+          sed -i 's/DB_DATABASE=.*/DB_DATABASE=testing/' .env
+          sed -i 's/DB_USERNAME=root/DB_USERNAME=root/' .env
+          sed -i 's/DB_PASSWORD=/DB_PASSWORD=root/' .env
+
+      - name: Run migrations
+        working-directory: ./apps/api
+        run: php artisan migrate:fresh
+
+      - name: Run tests
+        working-directory: ./apps/api
+        run: php artisan test --env=testing
+
+      - name: Generate coverage report
+        working-directory: ./apps/api
+        run: |
+          ./vendor/bin/phpunit \
+            --coverage-clover coverage.xml \
+            --coverage-text=php://stdout
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./apps/api/coverage.xml
+          flags: laravel-api

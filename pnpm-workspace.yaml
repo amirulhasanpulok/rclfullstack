@@ -1,0 +1,10 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+# Global configuration for all packages
+shared-workspace-lockfile: true
+node-linker: hoisted
+
+# Shamefully-hoist specific packages for compatibility
+shamefully-hoist: false

@@ -1,0 +1,22 @@
+{
+  "name": "@nicolatetcholdiwsconsole/api",
+  "version": "2.0.0",
+  "description": "Laravel 11 REST API backend",
+  "private": true,
+  "scripts": {
+    "dev": "php artisan serve --host=0.0.0.0 --port=8000",
+    "build": "php artisan optimize",
+    "test": "php artisan test",
+    "test:watch": "php artisan test --watch",
+    "lint": "pint",
+    "format": "pint",
+    "type-check": "php artisan tinker",
+    "migrate": "php artisan migrate",
+    "seed": "php artisan db:seed",
+    "migrate:fresh": "php artisan migrate:fresh --seed"
+  },
+  "keywords": ["laravel", "api", "rest", "ecommerce"],
+  "engines": {
+    "php": "^8.2"
+  }
+}

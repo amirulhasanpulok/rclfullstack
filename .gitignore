@@ -1,18 +1,56 @@
-/node_modules
+# Dependencies
+node_modules
+/vendor
+composer.lock
+pnpm-lock.yaml
+
+# Environment
+.env
+.env.*.local
+.env.backup
+.env.production
+
+# Build artifacts
+dist/
+build/
 /public/build
 /public/hot
 /public/storage
-/storage/*.key
-/vendor
-.env
-.env.backup
-.env.production
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-auth.json
-npm-debug.log
-yarn-error.log
+
+# IDE
 /.fleet
 /.idea
 /.vscode
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+/.phpunit.result.cache
+/coverage
+.nyc_output
+
+# Laravel
+/storage/*.key
+/storage/logs/*
+/bootstrap/cache
+Homestead.json
+Homestead.yaml
+auth.json
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Turbo
+.turbo/
+
+# Docker
+docker-compose.override.yml
+
+# OS files
+Thumbs.db
+.DS_Store

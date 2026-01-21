@@ -1,0 +1,108 @@
+import { apiClient } from './client';
+
+export interface Product {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  base_price: number;
+  category_id: number;
+  brand_id: number;
+  is_active: boolean;
+  is_featured?: boolean;
+  rating?: number;
+  created_at?: string;
+  updated_at?: string;
+  category?: any;
+  brand?: any;
+  variants?: any[];
+  images?: any[];
+  reviews?: any[];
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string;
+  parent_id?: number;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface Brand {
+  id: number;
+  name: string;
+  slug: string;
+  logo_url?: string;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data?: T;
+  meta?: {
+    timestamp: string;
+    version: string;
+  };
+}
+
+export interface PaginatedResponse<T> {
+  success: boolean;
+  message: string;
+  data: T[];
+  meta: {
+    current_page: number;
+    per_page: number;
+    total: number;
+    last_page: number;
+    timestamp: string;
+    version: string;
+  };
+}
+
+export const productsApi = {
+  list: (page = 1, perPage = 20) =>
+    apiClient.get<PaginatedResponse<Product>>('/products', {
+      params: { page, per_page: perPage },
+    }),
+
+  featured: () =>
+    apiClient.get<ApiResponse<Product[]>>('/products/featured'),
+
+  get: (id: number | string) =>
+    apiClient.get<ApiResponse<Product>>(`/products/${id}`),
+};
+
+export const categoriesApi = {
+  list: () =>
+    apiClient.get<ApiResponse<Category[]>>('/categories'),
+
+  get: (id: number | string) =>
+    apiClient.get<ApiResponse<Category>>(`/categories/${id}`),
+};
+
+export const brandsApi = {
+  list: () =>
+    apiClient.get<ApiResponse<Brand[]>>('/brands'),
+};
+
+export const ordersApi = {
+  create: (data: any) =>
+    apiClient.post<ApiResponse<any>>('/orders', data),
+
+  get: (id: number) =>
+    apiClient.get<ApiResponse<any>>(`/orders/${id}`),
+};
+
+export const reviewsApi = {
+  list: (productId: number) =>
+    apiClient.get<ApiResponse<any[]>>(`/products/${productId}/reviews`),
+
+  create: (productId: number, data: any) =>
+    apiClient.post<ApiResponse<any>>(`/products/${productId}/reviews`, data),
+};
